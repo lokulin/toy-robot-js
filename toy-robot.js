@@ -10,9 +10,13 @@ var dirs = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
 var placeExp = new RegExp('^PLACE (\\d+),(\\d+),(' + dirs.join('|') + ')$');
 
 function placeCmd(robot, table, line) {
-  var args = line.toString().match(placeExp);
-  if (args !== null && dirs.indexOf(args[3]) != -1) {
-    return robot.place(new Point(parseInt(args[1]), parseInt(args[2])), dirs.indexOf(args[3])/2.0 , table)
+  var args = line.toString().match(placeExp),
+      direction = dirs.indexOf(args[3])/2.0,
+      x = parseInt(args[1]),
+      y = parseInt(args[2]);
+
+  if (args !== null && direction != -1) {
+    return robot.place(new Point(x, y), direction , table)
   } else {
     return robot;
   }
@@ -35,9 +39,14 @@ function usage() {
 }
 
 function run() {
-  if(process.argv.length == 2) var stream = byline(process.stdin);
-  else var stream = byline(fs.createReadStream(process.argv[2], { encoding: 'utf8' }));
+  var file;
 
+  if(process.argv.length == 2) file=process.stdin;
+  else file = fs.createReadStream(process.argv[2]);
+
+  file.on('error', function(error) { console.log("Can't open file.");});
+
+  var stream = byline.createStream(file);
   var robot = new Robot(new Point(0,0), 0.0);
   var table = new Table(new Point(0,0), new Point(4,4));
 
@@ -47,4 +56,4 @@ function run() {
 }
 
 if(process.argv.length > 3) usage();
-run()
+run();
