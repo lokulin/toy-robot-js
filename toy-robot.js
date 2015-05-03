@@ -15,11 +15,7 @@ function placeCmd(robot, table, line) {
       x = parseInt(args[1]),
       y = parseInt(args[2]);
 
-  if (args !== null && direction != -1) {
-    return robot.place(new Point(x, y), direction , table)
-  } else {
-    return robot;
-  }
+  return robot.place(new Point(x, y), direction , table)
 }
 
 function execute(robot, table, line) {
@@ -28,7 +24,7 @@ function execute(robot, table, line) {
     case /^LEFT$/.test(line): return robot.left();
     case /^RIGHT$/.test(line): return robot.right();
     case /^REPORT$/.test(line): return robot.report(dirs);
-    case /^PLACE /.test(line): return placeCmd(robot, table, line);
+    case placeExp.test(line): return placeCmd(robot, table, line);
     default: return robot;
     }
 }
