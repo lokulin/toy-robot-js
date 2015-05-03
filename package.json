@@ -2,7 +2,7 @@
   "name": "toy-robot-js",
   "version": "0.0.1",
   "description": "A toy robot in node.js",
-  "main": "index.js",
+  "main": "toy-robot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
